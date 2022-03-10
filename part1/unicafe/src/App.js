@@ -1,25 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
 
-function App() {
+const DisplayHeader = ({ text }) => <h1>{text}</h1>;
+const Button = ({ onClick, text }) => <button onClick={onClick}>{text}</button>;
+const DisplayPara = ({ text, value }) => (
+  <p>
+    {text} {value}
+  </p>
+);
+
+const App = () => {
+  const [stats, setStats] = useState({ good: 0, neutral: 0, bad: 0 });
+
+  const incrementStat = (stat) => {
+    return () => setStats({ ...stats, [stat]: stats[stat] + 1 });
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <DisplayHeader text="give feedback" />
+      <Button onClick={incrementStat('good')} text="good" />
+      <Button onClick={incrementStat('neutral')} text="neutral" />
+      <Button onClick={incrementStat('bad')} text="bad" />
+      <DisplayHeader text="statistics" />
+      <DisplayPara text={'good'} value={stats.good} />
+      <DisplayPara text={'neutral'} value={stats.neutral} />
+      <DisplayPara text={'bad'} value={stats.bad} />
     </div>
   );
-}
+};
 
 export default App;
