@@ -8,13 +8,7 @@ const DisplayStat = ({ text, value }) => (
   </p>
 );
 
-const App = () => {
-  const [stats, setStats] = useState({ good: 0, neutral: 0, bad: 0 });
-
-  const incrementStat = (stat) => {
-    return () => setStats({ ...stats, [stat]: stats[stat] + 1 });
-  };
-
+const Statistics = ({ stats }) => {
   const calculateAll = () => {
     return stats.good + stats.neutral + stats.bad;
   };
@@ -28,18 +22,32 @@ const App = () => {
   };
 
   return (
-    <div>
-      <DisplayHeader text="give feedback" />
-      <Button onClick={incrementStat('good')} text="good" />
-      <Button onClick={incrementStat('neutral')} text="neutral" />
-      <Button onClick={incrementStat('bad')} text="bad" />
-      <DisplayHeader text="statistics" />
+    <>
       <DisplayStat text={'good'} value={stats.good} />
       <DisplayStat text={'neutral'} value={stats.neutral} />
       <DisplayStat text={'bad'} value={stats.bad} />
       <DisplayStat text="all" value={calculateAll()} />
       <DisplayStat text="average" value={calculateAvg()} />
       <DisplayStat text="positive" value={calculatePos()} />
+    </>
+  );
+};
+
+const App = () => {
+  const [stats, setStats] = useState({ good: 0, neutral: 0, bad: 0 });
+
+  const incrementStat = (stat) => {
+    return () => setStats({ ...stats, [stat]: stats[stat] + 1 });
+  };
+
+  return (
+    <div>
+      <DisplayHeader text="give feedback" />
+      <Button onClick={incrementStat('good')} text="good" />
+      <Button onClick={incrementStat('neutral')} text="neutral" />
+      <Button onClick={incrementStat('bad')} text="bad" />
+      <DisplayHeader text="statistics" />
+      <Statistics stats={stats} />
     </div>
   );
 };
