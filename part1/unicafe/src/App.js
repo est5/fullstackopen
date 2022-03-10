@@ -21,6 +21,10 @@ const Statistics = ({ stats }) => {
     return (stats.good / calculateAll()) * 100 + ' %';
   };
 
+  if (stats.good === 0 && stats.bad === 0 && stats.neutral === 0) {
+    return <>No feedback given</>;
+  }
+
   return (
     <>
       <DisplayStat text={'good'} value={stats.good} />
