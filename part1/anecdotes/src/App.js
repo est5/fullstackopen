@@ -1,7 +1,11 @@
 import { useState } from 'react';
 
-const Button = ({ onClick }) => {
-  return <button onClick={onClick}>next anecdote</button>;
+const Button = ({ onClick, text }) => {
+  return <button onClick={onClick}>{text}</button>;
+};
+
+const Display = ({ value }) => {
+  return <p>has {value} votes</p>;
 };
 
 const App = () => {
@@ -16,14 +20,45 @@ const App = () => {
   ];
 
   const [selected, setSelected] = useState(0);
+  const [votes, setVotes] = useState({
+    [anecdotes[0]]: 0,
+    [anecdotes[1]]: 0,
+    [anecdotes[2]]: 0,
+    [anecdotes[3]]: 0,
+    [anecdotes[4]]: 0,
+    [anecdotes[5]]: 0,
+    [anecdotes[6]]: 0,
+  });
+
+  const getMostVotes = () => {
+    const a = Array.from(Object.values(votes));
+    let indexOfMaxValue = a.reduce(
+      (iMax, x, i, arr) => (x > arr[iMax] ? i : iMax),
+      0
+    );
+    return indexOfMaxValue;
+  };
+
   const getRandomIdx = () => {
     setSelected(Math.floor(Math.random() * (anecdotes.length - 0)) + 0);
   };
 
+  const vote = () => {
+    let curr = votes[anecdotes[selected]];
+    setVotes({ ...votes, [anecdotes[selected]]: curr + 1 });
+  };
+
   return (
     <>
+      <h1>Anecdote of the day</h1>
       <div>{anecdotes[selected]}</div>
-      <Button onClick={getRandomIdx} />
+      <Display value={votes[anecdotes[selected]]} />
+      <Button onClick={vote} text="vote" />
+      <Button onClick={getRandomIdx} text="next" />
+      <h1>Anecdote with most votes</h1>
+      <p>
+        {anecdotes[getMostVotes()]} has {getMostVotes()} votes
+      </p>
     </>
   );
 };
