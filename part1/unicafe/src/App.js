@@ -2,11 +2,14 @@ import { useState } from 'react';
 
 const DisplayHeader = ({ text }) => <h1>{text}</h1>;
 const Button = ({ onClick, text }) => <button onClick={onClick}>{text}</button>;
-const DisplayStat = ({ text, value }) => (
-  <p>
-    {text} {value}
-  </p>
-);
+const DisplayStat = ({ text, value }) => {
+  return (
+    <tr>
+      <td>{text}</td>
+      <td>{value}</td>
+    </tr>
+  );
+};
 
 const Statistics = ({ stats }) => {
   const calculateAll = () => {
@@ -14,11 +17,11 @@ const Statistics = ({ stats }) => {
   };
 
   const calculateAvg = () => {
-    return (stats.good - stats.bad) / calculateAll();
+    return ((stats.good - stats.bad) / calculateAll()).toFixed(1);
   };
 
   const calculatePos = () => {
-    return (stats.good / calculateAll()) * 100 + ' %';
+    return ((stats.good / calculateAll()) * 100).toFixed(1) + ' %';
   };
 
   if (stats.good === 0 && stats.bad === 0 && stats.neutral === 0) {
@@ -27,12 +30,16 @@ const Statistics = ({ stats }) => {
 
   return (
     <>
-      <DisplayStat text={'good'} value={stats.good} />
-      <DisplayStat text={'neutral'} value={stats.neutral} />
-      <DisplayStat text={'bad'} value={stats.bad} />
-      <DisplayStat text="all" value={calculateAll()} />
-      <DisplayStat text="average" value={calculateAvg()} />
-      <DisplayStat text="positive" value={calculatePos()} />
+      <table>
+        <tbody>
+          <DisplayStat text="good" value={stats.good} />
+          <DisplayStat text="neutral" value={stats.neutral} />
+          <DisplayStat text="bad" value={stats.bad} />
+          <DisplayStat text="all" value={calculateAll()} />
+          <DisplayStat text="average" value={calculateAvg()} />
+          <DisplayStat text="positive" value={calculatePos()} />
+        </tbody>
+      </table>
     </>
   );
 };
